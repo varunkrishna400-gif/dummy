@@ -3,7 +3,7 @@
 A small command-line calculator for basic arithmetic. It supports addition,
 subtraction, multiplication, division, floor division, modulo, powers, unary
 signs, and parentheses. Expressions are parsed safely; arbitrary Python code is
-not executed.
+not executed. The `sqrt(number)` function is also available.
 
 ## Run
 
@@ -22,4 +22,5 @@ Examples:
 python calculator.py "7 * 6"
 python calculator.py "2 ** 8"
 python calculator.py "-10 % 3"
+python calculator.py "sqrt(81) + 2"
 ```

@@ -4,6 +4,7 @@ import argparse
 import ast
 import operator
 import sys
+import math
 
 
 _BINARY_OPERATORS = {
@@ -29,6 +30,17 @@ def _evaluate(node):
         )
     if isinstance(node, ast.UnaryOp) and type(node.op) in _UNARY_OPERATORS:
         return _UNARY_OPERATORS[type(node.op)](_evaluate(node.operand))
+    if (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Name)
+        and node.func.id == "sqrt"
+        and len(node.args) == 1
+        and not node.keywords
+    ):
+        value = _evaluate(node.args[0])
+        if value < 0:
+            raise ValueError("sqrt() requires a non-negative number.")
+        return math.sqrt(value)
     raise ValueError("Use numbers and supported arithmetic operators only.")
 
 
@@ -43,9 +55,9 @@ def calculate(expression):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Evaluate a basic arithmetic expression."
+        description="Evaluate arithmetic expressions; sqrt(number) is also supported."
     )
-    parser.add_argument("expression", help='for example: "(12 + 8) / 4"')
+    parser.add_argument("expression", help='for example: "sqrt(81) + 2"')
     args = parser.parse_args()
 
     try:
